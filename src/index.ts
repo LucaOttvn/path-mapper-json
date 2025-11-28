@@ -25,7 +25,6 @@ export const buildTree = (paths: string[]): TreeItem[] => {
         if (!node) {
             let isFile = false
             if (head.includes(".")) {
-                console.log(head[0] + ' includes dot')
                 isFile = head[0] !== '.'
             }
             node = {
@@ -43,6 +42,5 @@ export const buildTree = (paths: string[]): TreeItem[] => {
         insertPath(tree, path);
     }
 
-    console.log('///////')
     return tree;
 };
