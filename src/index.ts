@@ -23,10 +23,14 @@ export const buildTree = (paths: string[]): TreeItem[] => {
         let node = tree.find((item) => item.name === head);
 
         if (!node) {
+            let isFile = false
+            if (head.includes(".")) {
+                isFile = head[0] === '.'
+            }
             node = {
                 name: head,
                 path: path,
-                type: head.includes(".") ? TypesEnum.blob : TypesEnum.tree,
+                type: isFile ? TypesEnum.blob : TypesEnum.tree,
                 children: []
             };
             tree.push(node);
