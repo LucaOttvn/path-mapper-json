@@ -61,3 +61,22 @@ const paths = ["Coding", "Coding/JS", "Coding/JS/Enum.ts", "Coding/JS/ForLoop.md
     }
 ]
 ```
+
+### Installation
+
+```
+npm install path-mapper-json
+```
+
+### Usage
+
+```js
+import { buildTree } from 'path-mapper-json';
+
+const paths = ["Coding", "Coding/JS", "Coding/JS/Enum.ts", "Coding/JS/ForLoop.md", "Coding/TS"];
+const tree = buildTree(paths);
+
+console.log(tree);
+```
+
+MIT © LucaOttvn
