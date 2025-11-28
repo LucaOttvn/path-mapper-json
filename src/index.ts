@@ -5,6 +5,7 @@ enum TypesEnum {
 
 interface TreeItem {
     name: string;
+    path: string
     type: TypesEnum;
     children: TreeItem[];
 }
@@ -12,7 +13,8 @@ interface TreeItem {
 export const buildTree = (paths: string[]): TreeItem[] => {
     const tree: TreeItem[] = [];
 
-    const insertPath = (tree: TreeItem[], sections: string[]): void => {
+    const insertPath = (tree: TreeItem[], path: string): void => {
+        const sections = path.split("/").filter(s => s)
         if (sections.length === 0) return;
 
         const [head, ...rest] = sections;
@@ -23,16 +25,17 @@ export const buildTree = (paths: string[]): TreeItem[] => {
         if (!node) {
             node = {
                 name: head,
+                path: path,
                 type: head.includes(".") ? TypesEnum.blob : TypesEnum.tree,
                 children: []
             };
             tree.push(node);
         }
-        insertPath(node.children, rest);
+        insertPath(node.children, rest.join('/'));
     };
 
     for (const path of paths) {
-        insertPath(tree, path.split("/").filter(s => s));
+        insertPath(tree, path);
     }
 
     return tree;
