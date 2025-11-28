@@ -1,9 +1,9 @@
-export enum TypesEnum {
+enum TypesEnum {
     tree = 'tree',
     blob = 'blob'
 }
 
-export interface TreeItem {
+interface TreeItem {
     name: string;
     type: TypesEnum;
     children: TreeItem[];
