@@ -13,34 +13,48 @@ interface TreeItem {
 export const buildTree = (paths: string[]): TreeItem[] => {
     const tree: TreeItem[] = [];
 
-    const insertPath = (tree: TreeItem[], path: string): void => {
-        const sections = path.split("/").filter(s => s)
-        if (sections.length === 0) return;
+    const insertPath = (currentLevel: TreeItem[], pathSections: string[], parentPath: string): void => {
+        if (pathSections.length === 0) return;
 
-        const [head, ...rest] = sections;
-        if (!head) return;
+        const [head, ...rest] = pathSections;
 
-        let node = tree.find((item) => item.name === head);
+        // Construct the full path for this node
+        // If parentPath is empty, it's just "head", otherwise "parent/head"
+        const currentFullPath = parentPath ? `${parentPath}/${head}` : head;
 
-        if (!node) {
-            let isFile = false
-            if (head.includes(".")) {
-                isFile = head[0] !== '.'
-            }
+        let node = currentLevel.find((item) => item.name === head);
+
+        if (!node && head) {
+            const isFile = head.includes(".") && head[0] !== ".";
+
             node = {
                 name: head,
-                path: path,
+                path: currentFullPath || '',
                 type: isFile ? TypesEnum.blob : TypesEnum.tree,
-                children: []
+                children: [],
             };
-            tree.push(node);
+            currentLevel.push(node);
         }
-        insertPath(node.children, rest.join('/'));
+
+        insertPath(node!.children, rest, currentFullPath!);
     };
 
     for (const path of paths) {
-        insertPath(tree, path);
+        const sections = path.split("/").filter((s) => s);
+        insertPath(tree, sections, "");
     }
 
     return tree;
+};
+
+export const findByPath = (tree: TreeItem[], targetPath: string): TreeItem | null => {
+    for (const node of tree) {
+        if (node.path === targetPath) return node;
+
+        if (node.type === TypesEnum.tree && node.children.length > 0) {
+            const found = findByPath(node.children, targetPath);
+            if (found) return found;
+        }
+    }
+    return null;
 };
