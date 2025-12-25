@@ -25,5 +25,8 @@
     "directory"
   ],
   "author": "Your Name",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "next-auth": "^4.24.13"
+  }
 }

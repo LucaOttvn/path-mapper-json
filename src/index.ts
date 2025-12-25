@@ -25,7 +25,7 @@ export const buildTree = (paths: string[]): TreeItem[] => {
         let node = currentLevel.find((item) => item.name === head);
 
         if (!node && head) {
-            const isFile = head.includes(".") && head[0] !== ".";
+            const isFile = head.includes(".");
 
             node = {
                 name: head,
